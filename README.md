@@ -1,7 +1,7 @@
 # SCCM
 
 GetApplicationDependencies.sql
-- This will get you a list of all applications with dependencies along with the dependent apps
+- This will get you a list of all applications with dependencies along with the dependent app(s)
 
 GetTSResults.ps1
 - Run this with the -computer switch and it will return the path of the SMSTS.log and which steps completed successfully and which steps failed. 
