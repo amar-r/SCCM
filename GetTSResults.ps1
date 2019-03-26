@@ -1,8 +1,8 @@
-# ----------------------------------------------------------------------------- 
-# Author: Amar Rathore
-# Date: 2019-01-07
-# ----------------------------------------------------------------------------- 
-#Requires -RunAsAdministrator
+<#
+ Author: Amar Rathore
+ Date: 2019-01-07
+ Updated: 2019-03-26
+#>
 
 param (
     [Parameter(Mandatory = $true)][String]$computer
