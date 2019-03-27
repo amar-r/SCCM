@@ -60,8 +60,8 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
     $s = ForEach ($file in $smstslog) {Read-log -status 'Success'}
     $f = ForEach ($file in $smstslog) {Read-log -status 'Fail'}
 
-    If ($s) {Write-host 'Succeeded on the following steps:' -ForegroundColor Green -BackgroundColor Black; $s}
-    If ($f) {Write-host 'Failed on the following steps:' -ForegroundColor Red -BackgroundColor Black; $f}
+    If ($s) {Write-host "`nCompleted the following steps:" -ForegroundColor Green -BackgroundColor Black; $s}
+    If ($f) {Write-host 'Failed the following steps:' -ForegroundColor Red -BackgroundColor Black; $f}
 }
 Else {
     Write-host "$Computer is offline/unreachable" -ForegroundColor Red -BackgroundColor Black
