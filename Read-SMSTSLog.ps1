@@ -1,6 +1,6 @@
 <#
 .DESCRIPTION
-  Uses the Configuration Manager module to add device(s) to collection(s)
+  Parses through the SMSTS log and returns the steps which succeeded, steps which failed, comptuer name, timestamp, and log name. 
 .PARAMETER Computer
   To view a remote machine's logs use this parameter to define the machine name. 
 .PARAMETER Path
