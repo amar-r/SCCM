@@ -44,7 +44,7 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
                 Computer = $Computer
                 Time     = [datetime]::ParseExact($("$($matches.date) $($matches.time)"), "MM-dd-yyyy HH:mm:ss.fff", $null)
                 Message  = $Matches.Message
-                File     = $FileName
+                File     = $File
             }
         } | Format-Table -AutoSize
     }
@@ -57,8 +57,8 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
       Exit
     }
 
-    $s = ForEach ($file in $smstslog) {$FileName = Split-Path -Path $file -Leaf; Read-log -status 'Success'}
-    $f = ForEach ($file in $smstslog) {$FileName = Split-Path -Path $file -Leaf; Read-log -status 'Fail'}
+    $s = ForEach ($file in $smstslog) {Read-log -status 'Success'}
+    $f = ForEach ($file in $smstslog) {Read-log -status 'Fail'}
 
     If ($s) {Write-host 'Succeeded on the following steps:' -ForegroundColor Green -BackgroundColor Black; $s}
     If ($f) {Write-host 'Failed on the following steps:' -ForegroundColor Red -BackgroundColor Black; $f}
