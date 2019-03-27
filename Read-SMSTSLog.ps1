@@ -53,7 +53,7 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
         $smstslog = (Get-ChildItem $path -Recurse -File | Where-Object {$_.Name -match "Smsts"}).FullName
     }
     Else {
-      Write-Host "Unable to connect to $Path" -ForegroundColor Red -BackgroundColor Black
+      Write-Host "Unable to connect to $Path.`nIf you're attempting to connect to a remote machine try using the UNC path" -ForegroundColor Red -BackgroundColor Black
       Exit
     }
 
