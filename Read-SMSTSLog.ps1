@@ -49,7 +49,13 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
         } | Format-Table -AutoSize
     }
 
-    $smstslog = (Get-ChildItem $path -Recurse -File | Where-Object {$_.Name -match "Smsts"}).FullName
+    If (Test-Path $path){
+        $smstslog = (Get-ChildItem $path -Recurse -File | Where-Object {$_.Name -match "Smsts"}).FullName
+    }
+    Else {
+      Write-Host "Unable to connect to $Path" -ForegroundColor Red -BackgroundColor Black
+      Exit
+    }
 
     $s = ForEach ($file in $smstslog) {$FileName = Split-Path -Path $file -Leaf; Read-log -status 'Success'}
     $f = ForEach ($file in $smstslog) {$FileName = Split-Path -Path $file -Leaf; Read-log -status 'Fail'}
