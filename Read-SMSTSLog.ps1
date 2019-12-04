@@ -34,8 +34,8 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
         )        
 
         Switch ($status) {
-            'Success' {$Pattern = 'Win32 Code 0'; $Regex = '\<\!\[LOG.*\((?<Message>\w+|.*)\).*\]LOG]\!\>\<time=\"(?<Time>.{12}).*date=\"(?<Date>.{10}).*'}
-            'Fail' {$Pattern = 'Failed to run the action'; $Regex = '\<\!\[LOG\[.*\: (?<Message>\w.*).*\n.*<time=\"(?<Time>.{12}).*date=\"(?<Date>.{10}).*'}
+            'Success' { $Pattern = 'Win32 Code 0'; $Regex = '\<\!\[LOG.*\((?<Message>\w+|.*)\).*\]LOG]\!\>\<time=\"(?<Time>.{12}).*date=\"(?<Date>.{10})' }
+            'Fail' { $Pattern = 'Failed to run the action'; $Regex = '.*:\s(?<Message>.*|.*\n.*)\]\w+\].{3}time\S{2}(?<Time>.{12}).*date\S{2}(?<Date>.{10})' }
         }
 
         Get-Content $file | Select-String -Pattern $Pattern -Context 1| ForEach-Object {
