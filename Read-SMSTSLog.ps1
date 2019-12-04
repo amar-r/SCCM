@@ -22,7 +22,8 @@
 
 Param (    
     [string]$Computer = "$env:ComputerName",
-    [string]$Path = "\\$computer\c$\Windows\CCM\Logs"
+    [string]$Path = "\\$computer\c$\Windows\CCM\Logs",
+    [pscredential]$Credential
 )
 
 If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
@@ -49,12 +50,16 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
         } | Format-Table -AutoSize
     }
 
+    If ($PSBoundParameters.ContainsKey('Credential')) {
+      New-PSDrive -Name $Computer -PSProvider FileSystem -Root "\\$Computer\c$" -Credential $Credential -ErrorAction Stop | Out-Null
+    }
+
     If (Test-Path $path){
         $smstslog = (Get-ChildItem $path -Recurse -File | Where-Object {$_.Name -match "Smsts"}).FullName
     }
     Else {
       Write-Host "Unable to connect to $Path.`nIf you're attempting to connect to a remote machine try using the UNC path" -ForegroundColor Red -BackgroundColor Black
-      Exit
+      return
     }
 
     $s = ForEach ($file in $smstslog) {Read-log -status 'Success'}
@@ -62,6 +67,15 @@ If (Test-Connection $Computer -Count 1 -ErrorAction  SilentlyContinue) {
 
     If ($s) {Write-host "`nCompleted the following steps:" -ForegroundColor Green -BackgroundColor Black; $s}
     If ($f) {Write-host 'Failed the following steps:' -ForegroundColor Red -BackgroundColor Black; $f}
+
+    If (Get-PSDrive -Name $Computer) { 
+      try {
+        Remove-PSDrive -Name $Computer -ErrorAction Stop
+      }
+      catch {
+        Write-Warning "Failed to remove PS drive `"${Computer}:`""
+      }
+    }
 }
 Else {
     Write-host "$Computer is offline/unreachable" -ForegroundColor Red -BackgroundColor Black
